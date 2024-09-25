@@ -51,27 +51,25 @@ fn main() {
     let mut stdin = SP1Stdin::new();
     stdin.write(&args.n);
 
-    println!("n: {}", args.n);
-
     if args.execute {
         // Execute the program
         let (output, report) = client.execute(FRAUD_PROOF_ELF, stdin).run().unwrap();
         println!("Program executed successfully.");
+        println!("Number of cycles: {}", report.total_instruction_count());
+        println!();
 
         // Read the output.
         let decoded = PublicValuesStruct::abi_decode(output.as_slice(), true).unwrap();
-        let PublicValuesStruct { n, a, b } = decoded;
-        println!("n: {}", n);
-        println!("a: {}", a);
-        println!("b: {}", b);
-
-        let (expected_a, expected_b) = fraud_proof_lib::fibonacci(n);
-        assert_eq!(a, expected_a);
-        assert_eq!(b, expected_b);
-        println!("Values are correct!");
-
-        // Record the number of cycles executed.
-        println!("Number of cycles: {}", report.total_instruction_count());
+        let PublicValuesStruct {
+            block_hash,
+            solution,
+            constraint,
+            fraud_type,
+        } = decoded;
+        println!("block_hash: {}", block_hash);
+        println!("solution: 0x{:x}", solution);
+        println!("constraint: 0x{:x}", constraint);
+        println!("fraud_type: {}", fraud_type);
     } else {
         // Setup the program for proving.
         let (pk, vk) = client.setup(FRAUD_PROOF_ELF);

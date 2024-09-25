@@ -4,6 +4,9 @@ name = "fraud-proof-program"
 edition = "2021"
 
 [dependencies]
+alloy-primitives = { workspace = true }
 alloy-sol-types = { workspace = true }
-sp1-zkvm = "2.0.0"
 fraud-proof-lib = { path = "../lib" }
+essential-types = { path = "../../essential-base/crates/types" }
+essential-constraint-vm = { path = "../../essential-base/crates/constraint-vm" }
+sp1-zkvm = "2.0.0"

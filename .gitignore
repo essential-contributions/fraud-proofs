@@ -17,3 +17,6 @@ pgo-data.profdata
 
 # Env
 .env
+
+# Trace logs
+**/trace.log
